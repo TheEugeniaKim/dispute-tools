@@ -9,7 +9,10 @@ const settings = {
 const expectRule = ruleName => (fieldName, caught, not = false) => {
   if (not && caught && caught.errors) {
     if (caught.errors[fieldName]) {
-      expect(caught.errors[fieldName].errors.find(e => e.rule === ruleName)).not.exist;
+      const { errors } = caught.errors[fieldName];
+      const targetError = errors.find(e => e.rule === ruleName);
+
+      expect(targetError).exist;
     } else {
       // There were no errors, that's good!
     }
@@ -18,7 +21,11 @@ const expectRule = ruleName => (fieldName, caught, not = false) => {
   } else {
     expect(caught).exist;
     expect(caught.errors[fieldName]).exist;
-    expect(caught.errors[fieldName].errors.find(e => e.rule === ruleName)).exist;
+
+    const { errors } = caught.errors[fieldName];
+    const targetError = errors.find(e => e.rule === ruleName);
+
+    expect(targetError).exist;
   }
 };
 
